@@ -33,25 +33,25 @@ Once the dependencies are installed, you can start the development server using 
 
 npm start
 # or
-yarn start
+    yarn start
 
 To run the app on an Android emulator or device, run:
 Bash
 
-npm run android
+    npm run android
 # or
-yarn android
+    yarn android
 
 To run the app on an iOS simulator or device, run:
 Bash
 
-npm run ios
+    npm run ios
 # or
-yarn ios
+    yarn ios
 
 To run the app as a web application in your browser, run:
 Bash
 
-npm run web
+    npm run web
 # or
-yarn web
+    yarn web
