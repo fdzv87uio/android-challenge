@@ -1,5 +1,8 @@
 {
   "expo": {
+    "experiments": {
+      "reactNativeArchitecture": true
+    },
     "name": "android-challenge",
     "slug": "android-challenge",
     "version": "1.0.0",
