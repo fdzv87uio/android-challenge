@@ -55,3 +55,5 @@ Bash
     npm run web
 # or
     yarn web
+
+adb logcat | grep "com.fdzv87uio.androidchallenge"
