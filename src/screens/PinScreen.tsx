@@ -1,23 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable, Vibration } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../navigation/AppNavigator';
 import { Feather } from '@expo/vector-icons';
-
-type PinScreenNavigationProp = StackNavigationProp<RootStackParamList, 'PinScreen'>;
 
 const HARDCODED_PIN = '1235';
 
 const PinScreen = () => {
     const [pin, setPin] = useState('');
-    const navigation = useNavigation<PinScreenNavigationProp>();
+    const navigation = useNavigation();
 
     useEffect(() => {
         if (pin.length === 4) {
             if (pin === HARDCODED_PIN) {
                 // Correct PIN, navigate to the main app
-                navigation.replace('MainDrawer');
+                //@ts-ignore
+                navigation.replace('Main', {
+                screen: 'SeriesList'
+                });
             } else {
                 // Incorrect PIN, vibrate and clear the input
                 Vibration.vibrate();

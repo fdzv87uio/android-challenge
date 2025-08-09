@@ -1,11 +1,11 @@
 // src/screens/SearchScreen.tsx
 import React, { useState } from 'react';
-import { View, Text, FlatList, TextInput, Pressable, StyleSheet, ActivityIndicator } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import { View, Text, FlatList, TextInput, Pressable, StyleSheet, ActivityIndicator, Animated } from 'react-native';
 import { searchSeriesByName } from '../api/tvmaze';
 import { Series } from '../types/series';
 import AnimatedCard from '../components/AnimatedCard';
 
+// Use the standard Animated API to create an animatable View component.
 const AnimatedView = Animated.createAnimatedComponent(View);
 
 const SearchScreen = () => {
@@ -13,13 +13,13 @@ const SearchScreen = () => {
     const [results, setResults] = useState<Series[]>([]);
     const [loading, setLoading] = useState(false);
 
-    const searchScale = useSharedValue(1);
+    // Replace useSharedValue with standard Animated.Value
+    const searchScale = new Animated.Value(1);
 
-    const searchAnimatedStyle = useAnimatedStyle(() => {
-        return {
-            transform: [{ scale: searchScale.value }],
-        };
-    });
+    // The animated style object is created directly using the Animated.Value object.
+    const searchAnimatedStyle = {
+        transform: [{ scale: searchScale }],
+    };
 
     const handleSearch = async () => {
         if (!query) {
@@ -27,7 +27,13 @@ const SearchScreen = () => {
             return;
         }
         setLoading(true);
-        searchScale.value = withTiming(0.95, { duration: 150 });
+        // Use Animated.timing to create the animation
+        Animated.timing(searchScale, {
+            toValue: 0.95,
+            duration: 150,
+            useNativeDriver: true, // Use the native driver for performance
+        }).start();
+
         try {
             const response = await searchSeriesByName(query);
             setResults(response.data.map((item: { show: Series }) => item.show));
@@ -35,7 +41,11 @@ const SearchScreen = () => {
             console.error('Failed to search for series:', error);
         } finally {
             setLoading(false);
-            searchScale.value = withTiming(1, { duration: 150 });
+            Animated.timing(searchScale, {
+                toValue: 1,
+                duration: 150,
+                useNativeDriver: true,
+            }).start();
         }
     };
 

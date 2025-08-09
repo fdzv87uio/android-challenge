@@ -1,4 +1,3 @@
-import 'react-native-gesture-handler';
 import React, { useRef, useEffect } from 'react';
 import { SafeAreaView, StyleSheet, AppState, AppStateStatus, StatusBar } from 'react-native';
 import { NavigationContainer, useNavigationContainerRef } from '@react-navigation/native';

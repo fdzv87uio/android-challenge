@@ -1,40 +1,54 @@
+// src/components/Navbar.tsx (or .js)
+
 import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
-import { DrawerActions, useNavigation } from '@react-navigation/native';
-import { Feather } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
+import { Ionicons } from '@expo/vector-icons';
+import { useNavigation } from '@react-navigation/native';
 
-const Navbar = () => {
-    const navigation = useNavigation();
+// The toggleDrawer prop is passed from the parent component (AppNavigator)
+const Navbar = ({ toggleDrawer }:any) => {
+  const navigation = useNavigation();
 
-    return (
-        <View style={styles.container}>
-            <Text style={styles.logo}>TVMaze App</Text>
-            <Pressable onPress={() => navigation.dispatch(DrawerActions.openDrawer())} style={styles.menuButton}>
-                <Feather name="menu" size={24} color="#fff" />
-            </Pressable>
-        </View>
-    );
+  return (
+    <View style={styles.navbarContainer}>
+      <Pressable style={styles.iconButton} onPress={toggleDrawer}>
+        <Ionicons name="menu" size={24} color="#fff" />
+      </Pressable>
+      <View style={styles.titleContainer}>
+        <Text style={styles.title}>Android Challenge</Text>
+      </View>
+      <View style={styles.placeholder}></View>
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
-    container: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 16,
-        paddingTop: 50, // To avoid device notches
-        backgroundColor: '#1E1E1E',
-        borderBottomWidth: 1,
-        borderBottomColor: '#333',
-    },
-    logo: {
-        color: '#fff',
-        fontSize: 24,
-        fontWeight: 'bold',
-    },
-    menuButton: {
-        padding: 8,
-    },
+  navbarContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    backgroundColor: '#1E1E1E',
+    height: 60,
+    paddingHorizontal: 15,
+    paddingTop: 10,
+    borderBottomWidth: 1,
+    borderBottomColor: '#333',
+  },
+  iconButton: {
+    padding: 5,
+  },
+  titleContainer: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  title: {
+    color: '#fff',
+    fontSize: 20,
+    fontWeight: 'bold',
+  },
+  placeholder: {
+    width: 34, // This matches the size of the icon and its padding to center the title
+  },
 });
 
 export default Navbar;

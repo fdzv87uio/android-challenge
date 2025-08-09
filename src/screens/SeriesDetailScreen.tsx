@@ -1,32 +1,19 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, ScrollView, FlatList, Pressable, ToastAndroid, Platform } from 'react-native';
-import { RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { fetchSeriesDetails, fetchSeriesEpisodes } from '../api/tvmaze';
 import { Episode, Series } from '../types/series';
 import EpisodeModal from '../components/EpisodeModal';
 import { Feather } from '@expo/vector-icons';
 import { useFavorites } from '../context/FavoritesContext';
+import { MainStackParamList } from '../navigation/AppNavigator';
 
-type RootStackParamList = {
-    SeriesList: undefined;
-    SeriesDetail: { seriesId: number };
-    Search: undefined;
-    Favorites: undefined;
-    Pin:undefined
-};
+// Define the props for this screen using NativeStackScreenProps
+type SeriesDetailScreenProps = NativeStackScreenProps<MainStackParamList, 'SeriesDetail'>;
 
-type SeriesDetailScreenRouteProp = RouteProp<RootStackParamList, 'SeriesDetail'>;
-type SeriesDetailScreenNavigationProp = StackNavigationProp<RootStackParamList, 'SeriesDetail'>;
-
-type Props = {
-    route: SeriesDetailScreenRouteProp;
-    navigation: SeriesDetailScreenNavigationProp;
-};
-
-const SeriesDetailScreen = ({ route }: Props) => {
+const SeriesDetailScreen = ({ route }: SeriesDetailScreenProps) => {
+    // The seriesId is now correctly typed from MainStackParamList
     const { seriesId } = route.params;
-    // Use the useFavorites hook to get state and functions from the context
     const { toggleFavorite, isFavorite } = useFavorites();
     const [series, setSeries] = useState<Series | null>(null);
     const [episodes, setEpisodes] = useState<Episode[]>([]);
@@ -52,9 +39,7 @@ const SeriesDetailScreen = ({ route }: Props) => {
     const handleToggleFavorite = () => {
         if (!series) return;
 
-        // Check current favorite status from the context before the toggle
         const isCurrentlyFavorite = isFavorite(series.id);
-
         toggleFavorite(series);
 
         if (Platform.OS === 'android') {

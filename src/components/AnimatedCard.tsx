@@ -1,12 +1,12 @@
 // src/components/AnimatedCard.tsx
 import React, { useEffect } from 'react';
-import { Pressable, Text, Image, StyleSheet, ToastAndroid, View } from 'react-native';
-import Animated, { useSharedValue, withTiming, useAnimatedStyle } from 'react-native-reanimated';
+import { Pressable, Text, Image, StyleSheet, ToastAndroid, View, Animated } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Series } from '../types/series';
 import { Feather } from '@expo/vector-icons';
-import { useFavorites } from '../context/FavoritesContext'; // <-- New import
+import { useFavorites } from '../context/FavoritesContext';
 
+// Use the standard Animated API to create an animatable Pressable component.
 const AnimatedPressable = Animated.createAnimatedComponent(Pressable);
 
 interface AnimatedCardProps {
@@ -15,13 +15,27 @@ interface AnimatedCardProps {
 
 const AnimatedCard = ({ item }: AnimatedCardProps) => {
     const navigation = useNavigation();
-    const { toggleFavorite, isFavorite } = useFavorites(); // <-- Use context here
-    const opacity = useSharedValue(0);
-    const translateY = useSharedValue(50);
+    const { toggleFavorite, isFavorite } = useFavorites();
+
+    // Replace useSharedValue with standard Animated.Value
+    const opacity = new Animated.Value(0);
+    const translateY = new Animated.Value(50);
 
     useEffect(() => {
-        opacity.value = withTiming(1, { duration: 500 });
-        translateY.value = withTiming(0, { duration: 500 });
+        // Use Animated.timing to create the animations
+        // and Animated.parallel to run them at the same time.
+        Animated.parallel([
+            Animated.timing(opacity, {
+                toValue: 1,
+                duration: 500,
+                useNativeDriver: false, // Set to false to support animating both opacity and transform
+            }),
+            Animated.timing(translateY, {
+                toValue: 0,
+                duration: 500,
+                useNativeDriver: false, // Set to false to support animating both opacity and transform
+            }),
+        ]).start();
     }, []);
 
     const handleLongPress = () => {
@@ -30,29 +44,28 @@ const AnimatedCard = ({ item }: AnimatedCardProps) => {
         ToastAndroid.show(message, ToastAndroid.SHORT);
     };
 
-    const animatedStyle = useAnimatedStyle(() => {
-        return {
-            opacity: opacity.value,
-            transform: [{ translateY: translateY.value }],
-        };
-    });
+    // The animated style object is created directly using the Animated.Value objects.
+    const animatedStyle = {
+        opacity: opacity,
+        transform: [{ translateY: translateY }],
+    };
 
     return (
         <AnimatedPressable
             style={[styles.card, animatedStyle]}
             onPress={() => {
                 //@ts-ignore
-                navigation.navigate('Home', {
-                screen: 'SeriesDetail',
-                params: { seriesId: item.id },
-            })
-            } }
+                navigation.navigate('Main', {
+                    screen: 'SeriesDetail',
+                    params: { seriesId: item.id },
+                });
+            }}
             onLongPress={handleLongPress}
             accessibilityRole="button"
             accessibilityLabel={`View details for ${item.name}. Long press to ${isFavorite(item.id) ? 'remove from' : 'add to'} favorites.`}
         >
             <Image source={{ uri: item.image?.medium }} style={styles.cardImage} />
-            {isFavorite(item.id) && ( // <-- Check state from context
+            {isFavorite(item.id) && (
                 <View style={styles.favoriteBadge}>
                     <Feather name="heart" size={16} color="#fff" />
                 </View>

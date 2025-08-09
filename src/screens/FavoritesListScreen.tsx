@@ -37,10 +37,10 @@ const FavoritesListScreen = () => {
             style={styles.card}
             onPress={() => {
                 //@ts-ignore
-                navigation.navigate('Home', {
+                navigation.navigate('Main', {
                 screen: 'SeriesDetail',
                 params: { seriesId: item.id },
-            })
+            });
             } }
             accessibilityRole="button"
             accessibilityLabel={`View details for ${item.name}`}
