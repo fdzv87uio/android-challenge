@@ -25,7 +25,7 @@
       },
       "edgeToEdgeEnabled": false,
       "package": "com.fdzv87uio.androidchallenge",
-      "versionCode": 3
+      "versionCode": 5
     },
     "web": {
       "favicon": "./assets/favicon.png"
