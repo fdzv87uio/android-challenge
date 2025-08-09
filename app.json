@@ -1,11 +1,8 @@
 {
   "expo": {
-    "experiments": {
-      "reactNativeArchitecture": false
-    },
     "name": "android-challenge",
     "slug": "android-challenge",
-    "version": "1.0.2",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
@@ -15,6 +12,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
+    "experiments": {
+      "reactNativeArchitecture": false
+    },
     "ios": {
       "supportsTablet": true
     },
@@ -23,9 +23,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "edgeToEdgeEnabled": true,
+      "edgeToEdgeEnabled": false,
       "package": "com.fdzv87uio.androidchallenge",
-      "versionCode": 2
+      "versionCode": 3
     },
     "web": {
       "favicon": "./assets/favicon.png"
